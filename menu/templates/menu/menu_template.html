@@ -1,18 +1,27 @@
+{% load menu_tags %}
+
 <ul class="menu">
     {% for item in root_items %}
         <li class="menu-item {% if item.id in active_items %}active{% endif %}">
-            <a href="{{ item.get_absolute_url }}"
-               class="{% if item.get_absolute_url == current_path %}current{% endif %}">
+            <a href="{{ item.get_absolute_url }}" 
+               {% if item.get_absolute_url == current_path %}class="current"{% endif %}>
                 {{ item.name }}
             </a>
-            {% if item.id in active_items and menu_tree|get_item:item.id %}
-                <ul class="submenu">
-                    {% for child in menu_tree|get_item:item.id %}
-                        <li class="{% if child.get_absolute_url == current_path %}current{% endif %}">
-                            <a href="{{ child.get_absolute_url }}">{{ child.name }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
+            {% if item.id in active_items %}
+                {% with children=menu_tree|get_item:item.id %}
+                    {% if children %}
+                        <ul class="submenu">
+                            {% for child in children %}
+                                <li>
+                                    <a href="{{ child.get_absolute_url }}"
+                                       {% if child.get_absolute_url == current_path %}class="current"{% endif %}>
+                                        {{ child.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
             {% endif %}
         </li>
     {% endfor %}

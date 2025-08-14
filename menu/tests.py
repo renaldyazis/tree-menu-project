@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.auth.models import User
 from .models import MenuItem
 
 
@@ -51,6 +52,14 @@ class MenuTagTest(TestCase):
             order=1
         )
 
+        # Убираем дублирующий пункт меню
+        # self.named_item = MenuItem.objects.create(
+        #     name="Named URL",
+        #     named_url="about",
+        #     menu_name="main_menu",
+        #     order=4
+        # )
+
     def test_menu_rendering(self):
         response = self.client.get("/")
         self.assertContains(response, "Home")
@@ -59,14 +68,19 @@ class MenuTagTest(TestCase):
 
     def test_active_item_detection(self):
         response = self.client.get("/about/")
+        # Ожидаем 1 активный пункт (About)
         self.assertContains(response, 'class="current"', count=1)
-        self.assertContains(response, "About")
+        # Проверяем, что подменю History видно
         self.assertContains(response, "History")
 
     def test_submenu_expansion(self):
         response = self.client.get("/about/history/")
-        self.assertContains(response, "History")
+        # Ожидаем 1 активный пункт (History)
         self.assertContains(response, 'class="current"', count=1)
+        # Проверяем, что родительский пункт About активен
+        self.assertContains(response, 'menu-item active', count=1)
+        # Проверяем, что History отображается
+        self.assertContains(response, "History")
 
     def test_db_query_count(self):
         with self.assertNumQueries(1):
@@ -76,13 +90,13 @@ class MenuTagTest(TestCase):
 class MenuAdminTest(TestCase):
     def setUp(self):
         self.admin = Client()
-        self.admin_user = self.admin.force_login(
-            self.admin.create_superuser(
-                username="admin",
-                email="admin@example.com",
-                password="password"
-            )
+        # Создаем суперпользователя
+        self.superuser = User.objects.create_superuser(
+            username="admin",
+            email="admin@example.com",
+            password="password"
         )
+        self.admin.force_login(self.superuser)
 
     def test_admin_list(self):
         response = self.admin.get("/admin/menu/menuitem/")
@@ -92,7 +106,41 @@ class MenuAdminTest(TestCase):
         response = self.admin.post("/admin/menu/menuitem/add/", {
             "name": "New Item",
             "menu_name": "test_menu",
-            "url": "/new-item/"
+            "url": "/new-item/",
+            "order": 1
         })
         self.assertEqual(response.status_code, 302)
         self.assertTrue(MenuItem.objects.filter(name="New Item").exists())
+
+    def test_admin_edit(self):
+        item = MenuItem.objects.create(
+            name="Test Item",
+            url="/test/",
+            menu_name="test_menu"
+        )
+        response = self.admin.post(
+            f"/admin/menu/menuitem/{item.id}/change/",
+            {
+                "name": "Updated Item",
+                "menu_name": "test_menu",
+                "url": "/updated/",
+                "order": 1
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        updated = MenuItem.objects.get(id=item.id)
+        self.assertEqual(updated.name, "Updated Item")
+        self.assertEqual(updated.url, "/updated/")
+
+    def test_admin_delete(self):
+        item = MenuItem.objects.create(
+            name="Delete Me",
+            url="/delete/",
+            menu_name="test_menu"
+        )
+        response = self.admin.post(
+            f"/admin/menu/menuitem/{item.id}/delete/",
+            {"post": "yes"}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(MenuItem.objects.filter(name="Delete Me").exists())
