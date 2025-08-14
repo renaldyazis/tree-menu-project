@@ -1,11 +1,8 @@
-# tree-menu-project
-=======
 # 🌳 Tree Menu Django Application
 
 [![Django Version](https://img.shields.io/badge/Django-5.2-green)](https://www.djangoproject.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13-blue)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-orange)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This Django application provides functionality for creating and displaying tree menus with compliance with the following requirements:
 
@@ -134,4 +131,3 @@ tree_menu_app/
 ├── urls.py 
 └── wsgi.py
 ```
->>>>>>> develop
